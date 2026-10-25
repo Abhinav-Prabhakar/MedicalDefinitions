@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "generatedAt": "2026-10-25",
+  "collection": {
+    "id": "medical-terminology",
+    "name": "Medical Terminology",
+    "tagline": "Medicine, in one line.",
+    "topic": "Medical terminology for pre-health students",
+    "audience": "Pre-health undergraduates and nursing students",
+    "level": "intro",
+    "jurisdiction": "US",
+    "disclaimer": "Educational vocabulary only; not medical advice."
+  },
+  "coverage": {
+    "sections": 1,
+    "subjects": 6,
+    "definitions": 327,
+    "sources": 18
+  },
+  "semesters": [
+    {
+      "id": "core",
+      "label": "Core",
+      "status": "complete",
+      "subjects": [
+        {
+          "id": "word-parts",
+          "name": "Word Parts",
+          "shortName": "Word parts",
+          "code": "",
+          "courseType": "core",
+          "data": "data/subjects/word-parts.json",
+          "definitionCount": 48,
+          "unitCount": 4,
+          "coveredUnits": 4,
+          "status": "complete"
+        },
+        {
+          "id": "body-systems",
+          "name": "Body Systems",
+          "shortName": "Body systems",
+          "code": "",
+          "courseType": "core",
+          "data": "data/subjects/body-systems.json",
+          "definitionCount": 60,
+          "unitCount": 6,
+          "coveredUnits": 6,
+          "status": "complete"
+        },
+        {
+          "id": "clinical-abbreviations",
+          "name": "Clinical Abbreviations",
+          "shortName": "Clinical abbreviations",
+          "code": "",
+          "courseType": "core",
+          "data": "data/subjects/clinical-abbreviations.json",
+          "definitionCount": 50,
+          "unitCount": 6,
+          "coveredUnits": 6,
+          "status": "complete"
+        },
+        {
+          "id": "documentation",
+          "name": "Documentation",
+          "shortName": "Documentation",
+          "code": "",
+          "courseType": "core",
+          "data": "data/subjects/documentation.json",
+          "definitionCount": 50,
+          "unitCount": 5,
+          "coveredUnits": 5,
+          "status": "complete"
+        },
+        {
+          "id": "diagnostics",
+          "name": "Diagnostics",
+          "shortName": "Diagnostics",
+          "code": "",
+          "courseType": "core",
+          "data": "data/subjects/diagnostics.json",
+          "definitionCount": 69,
+          "unitCount": 5,
+          "coveredUnits": 5,
+          "status": "complete"
+        },
+        {
+          "id": "pharmacology-basics",
+          "name": "Pharmacology Basics",
+          "shortName": "Pharmacology basics",
+          "code": "",
+          "courseType": "core",
+          "data": "data/subjects/pharmacology-basics.json",
+          "definitionCount": 50,
+          "unitCount": 5,
+          "coveredUnits": 5,
+          "status": "complete"
+        }
+      ]
+    }
+  ]
+}

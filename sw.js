@@ -1,0 +1,113 @@
+/* one·liners — Medical Terminology — offline app shell */
+const CACHE = 'oneliners-medical-terminology-v1';
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./manifest.webmanifest",
+  "./data/curriculum.json",
+  "./data/sources.json",
+  "./assets/icon.svg",
+  "./assets/icon-192.png",
+  "./assets/icon-512.png",
+  "./assets/icon-maskable-512.png",
+  "./assets/apple-touch-icon.png",
+  "./assets/favicon-32.png",
+  "./assets/fonts/source-sans-3-normal-200-700.woff2",
+  "./assets/fonts/source-serif-4-normal-200-700.woff2"
+];
+
+async function precacheCurriculum(cache) {
+  try {
+    const url = new URL('./data/curriculum.json', self.location.href).href;
+    const response = await fetch(url, { cache: 'no-cache' });
+    if (!response || !response.ok) return;
+
+    const index = await response.clone().json();
+    await cache.put(url, response.clone());
+
+    const files = [];
+    for (const semester of index.semesters || []) {
+      for (const subject of semester.subjects || []) {
+        if (subject && subject.data) {
+          files.push(new URL(subject.data, self.location.href).href);
+        }
+      }
+    }
+    await Promise.all(files.map(file => cache.add(file).catch(() => {})));
+  } catch (e) {
+    // The shell still installs; data will be cached on first online use.
+  }
+}
+
+self.addEventListener('install', event => {
+  event.waitUntil(
+    caches.open(CACHE)
+      .then(async cache => {
+        await cache.addAll(ASSETS);
+        await precacheCurriculum(cache);
+      })
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys()
+      .then(keys => Promise.all(
+        keys.filter(k => k.startsWith('oneliners-medical-terminology-') && k !== CACHE)
+            .map(k => caches.delete(k))
+      ))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', event => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE);
+      try {
+        const fresh = await fetch(request);
+        if (fresh && fresh.ok) cache.put(request, fresh.clone());
+        return fresh;
+      } catch (e) {
+        return (await cache.match(request)) || (await cache.match('./index.html')) || (await cache.match('./'));
+      }
+    })());
+    return;
+  }
+
+  // Curriculum data changes with each batch, so prefer the network while
+  // online and fall back to the cached copy offline.
+  if (url.pathname.includes('/data/') && url.pathname.endsWith('.json')) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE);
+      try {
+        const fresh = await fetch(request);
+        if (fresh && fresh.ok) cache.put(request, fresh.clone());
+        return fresh;
+      } catch (e) {
+        const cached = await cache.match(request);
+        if (cached) return cached;
+        throw e;
+      }
+    })());
+    return;
+  }
+
+  event.respondWith((async () => {
+    const cache = await caches.open(CACHE);
+    const cached = await cache.match(request);
+    const network = fetch(request).then(response => {
+      if (response && response.ok) cache.put(request, response.clone());
+      return response;
+    }).catch(() => null);
+
+    return cached || network || Response.error();
+  })());
+});

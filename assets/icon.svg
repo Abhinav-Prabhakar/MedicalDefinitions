@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="one·liners medical terminology">
+  <rect width="512" height="512" rx="112" fill="#0f1a2c"/>
+  <rect x="30" y="30" width="452" height="452" rx="90" fill="none" stroke="#eef3fa" stroke-opacity=".07"/>
+  <path d="M84 284 H178 L202 236 L226 284 H252 L284 128 L316 396 L344 284 H428" fill="none" stroke="#eef3fa"
+        stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="428" cy="284" r="16" fill="#0f1a2c" stroke="#ff7b7f" stroke-width="12"/>
+  <circle cx="84" cy="284" r="10" fill="#6aa6ef"/>
+</svg>
